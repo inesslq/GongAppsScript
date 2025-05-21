@@ -1,6 +1,11 @@
 // 📄 Gong Transcript Inserter for Google Docs
 // This Google Apps Script allows users to fetch a Gong call transcript by entering a Call ID, and automatically insert it into a Google Doc. It includes call metadata (date, URL) and correctly maps speaker names to their statements.
 
+const API_KEY = "INSERT YOUR API ACCESS KEY HERE"; // ‼️ Insert your GONG API key here
+const API_SECRET = "INSERT YOUR SECRET HERE"; // ‼️ Insert your GONG API secret here
+
+// Functions to add a custom menu, prompting a user to insert a call id for the transcript lookup
+
 function onOpen() {
   var ui = DocumentApp.getUi();
   ui.createMenu("Gong API")
@@ -22,12 +27,14 @@ function showPrompt() {
   }
 }
 
+// Function to pull transcript data along with matched speaker names (instead of just speaker IDs)
+
 function fetchAndAppendTranscripts(callId) {
   var doc = DocumentApp.getActiveDocument();
   var body = doc.getBody();
 
-  var apiKey = "INSERT YOUR API ACCESS KEY HERE"; // ‼️ Insert your GONG API key here
-  var apiSecret = "INSERT YOUR SECRET HERE"; // ‼️ Insert your GONG API secret here
+  var apiKey = API_KEY; 
+  var apiSecret = API_SECRET; 
   var authHeader = "Basic " + Utilities.base64Encode(apiKey + ":" + apiSecret);
 
   // Fetch Speaker Details (parties) using exposedFields
@@ -38,7 +45,7 @@ function fetchAndAppendTranscripts(callId) {
   "exposedFields": {
     "parties": true
   }
-} // Corrected field structure
+} 
   });
 
   var speakerOptions = {
